@@ -107,6 +107,18 @@ class SoapSource extends DataSource {
         if(!empty($this->config['proxy_port'])) {
             $options['proxy_port'] = $this->config['proxy_port'];
         }
+        if(!empty($this->config['soap_version'])) {
+            $options['soap_version'] = $this->config['soap_version'];
+        }
+        if(!empty($this->config['compression'])) {
+            $options['compression'] = $this->config['compression'];
+        }
+        if(!empty($this->config['use'])) {
+            $options['use'] = $this->config['use'];
+        }
+        if(!empty($this->config['style'])) {
+            $options['style'] = $this->config['style'];
+        }
         
          /** Workaround to prevent SoapClient throwing a RuntimeException **/
         if (extension_loaded('curl') && Configure::read('debug') > 0 && !empty($this->config['wsdl']) && empty($this->config['curl_off']))
@@ -193,7 +205,7 @@ class SoapSource extends DataSource {
         }
         
         try {
-            $result = $this->client->__soapCall($method, $queryData);
+            $result = $this->client->{$method}($queryData);
         } catch (SoapFault $fault) {
             $this->error = $fault->faultstring;
         }
